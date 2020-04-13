@@ -1,6 +1,7 @@
 package com.example.eurekaapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -16,9 +17,14 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
+    SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sp = getSharedPreferences("eureka", MODE_PRIVATE);
+
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.bottom_navigation);
         navView.setOnNavigationItemSelectedListener(navListener);
@@ -32,8 +38,12 @@ public class MainActivity extends AppCompatActivity {
 //        NavigationUI.setupWithNavController(navView, navController);
 
 //        REDIRECT TO LOGIN PAGE
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
+        if(!sp.getBoolean("logged",false)){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {

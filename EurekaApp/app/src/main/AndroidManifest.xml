@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.eurekaapp">
+    
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -13,14 +16,12 @@
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar"
-            android:noHistory="true"></activity>
+            ></activity>
         <activity
-            android:name=".LoginActivity"
-            android:noHistory="true"/>
+            android:name=".LoginActivity"/>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:noHistory="true">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
