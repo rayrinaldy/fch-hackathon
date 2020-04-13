@@ -88,15 +88,12 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
-                                    String jwt = (String) response.get("jwt");
                                     JSONObject user = (JSONObject) response.get("user");
-                                    JSONObject reward = (JSONObject) user.get("reward");
-                                    int id = (Integer) user.get("id");
+                                    String id = (String) user.get("id");
                                     String firstName = (String) user.get("firstName");
                                     String lastName = (String) user.get("lastName");
                                     String phoneNo = (String) user.get("phoneNo");
-                                    sp.edit().putString("jwt", jwt).apply();
-                                    sp.edit().putInt("id", id).apply();
+                                    sp.edit().putString("id", id).apply();
                                     sp.edit().putString("firstName", firstName).apply();
                                     sp.edit().putString("lastName", lastName).apply();
                                     sp.edit().putString("email", email).apply();
