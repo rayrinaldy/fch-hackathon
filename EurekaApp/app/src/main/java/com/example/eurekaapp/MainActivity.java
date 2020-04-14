@@ -15,6 +15,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -23,6 +29,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sp;
     FusedLocationProviderClient mFusedLocationClient;
+
+    final String url = "http://128.199.175.144:1337/locations";
+
+    String id;
 
     int PERMISSION_ID = 99;
 
@@ -68,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+        id = sp.getString("id", "null");
         getLastLocation();
 
     }
@@ -155,9 +170,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
-//            latTextView.setText(mLastLocation.getLatitude()+"");
-//            lonTextView.setText(mLastLocation.getLongitude()+"");
-            Log.e("LOCATION:",+mLastLocation.getLatitude()+" "+mLastLocation.getLongitude());
         }
     };
 
@@ -173,13 +185,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (location == null) {
                                     requestNewLocationData();
                                 } else {
-//                                    latTextView.setText(location.getLatitude()+"");
-//                                    lonTextView.setText(location.getLongitude()+"");
-                                    Log.e("LOCATION:", location.getLatitude()+" "+location.getLongitude());
-                                    Toast.makeText(MainActivity.this,
-                                            location.getLatitude()+" "+location.getLongitude(),
-                                            Toast.LENGTH_SHORT).show();
-                                    // TODO: POST LOCATION
+                                    postLocationToServer(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
                                 }
                             }
                         }
@@ -192,6 +198,44 @@ public class MainActivity extends AppCompatActivity {
         } else {
             requestPermissions();
         }
+    }
+
+    private void postLocationToServer(String latitude, String longitude) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        JSONObject object = new JSONObject();
+        JSONArray user = new JSONArray();
+        JSONObject coordinates = new JSONObject();
+        try {
+            // input API parameters
+            user.put(id);
+            coordinates.put("lat", latitude);
+            coordinates.put("long", longitude);
+            object.put("users", user);
+            object.put("coordinate", coordinates);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Request a JSON response from the provided URL
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Toast.makeText(MainActivity.this, "Location Saved", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "Couldn't save location", Toast.LENGTH_SHORT).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        requestQueue.add(jsonObjectRequest);
     }
 
 }

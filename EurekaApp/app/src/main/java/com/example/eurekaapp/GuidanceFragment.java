@@ -36,6 +36,7 @@ public class GuidanceFragment extends Fragment implements View.OnClickListener {
     String id;
 
     final String url = "http://128.199.175.144:1337/users";
+    final String backtrackUrl = "http://128.199.175.144:1337/locations/backtrack/";
     final String BUTTON_TXT_POSITIVE = "I HAVE NOT BEEN TESTED POSITIVE FOR COVID-19";
     final String BUTTON_TXT_NEGATIVE = "I HAVE BEEN TESTED POSITIVE FOR COVID-19";
 
@@ -132,6 +133,31 @@ public class GuidanceFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getActivity(), "Invalid attempt. Try again", Toast.LENGTH_SHORT).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        requestQueue.add(jsonObjectRequest);
+
+        // TO BACKTRACK
+        object = new JSONObject();
+        try {
+            object.put("","");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Request a JSON response from the provided URL
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, backtrackUrl+id, object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("DEBUG", "Backtrack works");
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("ERROR", error.toString());
+                Toast.makeText(getActivity(), "Couldn't backtrack", Toast.LENGTH_SHORT).show();
             }
         });
         // Add the request to the RequestQueue.
