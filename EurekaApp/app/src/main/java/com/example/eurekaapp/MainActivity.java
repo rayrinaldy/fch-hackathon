@@ -87,9 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_guidance:
                             selectedFragment = new GuidanceFragment();
                             break;
-                        case R.id.nav_settings:
-                            selectedFragment = new SettingsFragment();
-                            break;
+
 
                     }
                     try {
