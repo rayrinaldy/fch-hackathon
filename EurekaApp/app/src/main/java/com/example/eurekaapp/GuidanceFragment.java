@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,49 +39,46 @@ public class GuidanceFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView =inflater.inflate(R.layout.fragment_guidance, container, false);
-        Thread newThread = new Thread(() -> {
 
-            sp = this.getActivity().getSharedPreferences("eureka", Context.MODE_PRIVATE);
-            String id = sp.getString("id", "null");
-            Log.e("DEBUG-----", url+"?id="+id);
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-            JSONObject object = new JSONObject();
-            try {
-                // input API parameters
-                object.put("","");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        button = (Button) rootView.findViewById(R.id.guidanceButton);
 
-            // Request a JSON response from the provided URL
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url+"?id="+id, object,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                JSONObject user = (JSONObject) response.get("user");
-                                String isUnderObservation = (String) user.get("underObservation");
-                                String isCovidPositive = (String) user.get("isCovidPositive");
-                                Log.e("DEBUG", isCovidPositive + isUnderObservation);
-                                if(isUnderObservation == "true" || isCovidPositive == "true") {
-                                    button.setText("Positive");
-                                } else {
-                                    button.setText("Negative");
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+        sp = this.getActivity().getSharedPreferences("eureka", Context.MODE_PRIVATE);
+        String id = sp.getString("id", "null");
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        JSONObject object = new JSONObject();
+        try {
+            // input API parameters
+            object.put("","");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Request a JSON response from the provided URL
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url+"/"+id, object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Boolean isUnderObservation = (Boolean) response.get("underObservation");
+                            Boolean isCovidPositive = (Boolean) response.get("isCovidPositive");
+                            if(isCovidPositive) {
+                                Toast.makeText(getActivity(), "You have been declared positive of COVID-19", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "You have NOT been declared positive of COVID-19", Toast.LENGTH_SHORT).show();
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity(), "Invalid attempt. Try again", Toast.LENGTH_SHORT).show();
-                }
-            });
-            // Add the request to the RequestQueue.
-            requestQueue.add(jsonObjectRequest);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("ERROR", error.toString());
+                Toast.makeText(getActivity(), "Invalid attempt. Try again", Toast.LENGTH_SHORT).show();
+            }
         });
-        newThread.start();
+        // Add the request to the RequestQueue.
+        requestQueue.add(jsonObjectRequest);
 
         button = (Button) rootView.findViewById(R.id.guidanceButton);
         button.setOnClickListener(this);
@@ -94,6 +92,7 @@ public class GuidanceFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.guidanceButton:
 //                switchFragment(HelpFragment.TAG);
+                Toast.makeText(getActivity(), "Changing status", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
