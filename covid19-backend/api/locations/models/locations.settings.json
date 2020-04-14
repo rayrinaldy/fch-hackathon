@@ -11,9 +11,9 @@
   },
   "attributes": {
     "users": {
+      "via": "locations",
       "plugin": "users-permissions",
       "collection": "user",
-      "via": "locations",
       "dominant": true
     },
     "coordinate": {

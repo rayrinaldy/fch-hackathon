@@ -1286,6 +1286,10 @@
                 }
               }
             }
+          },
+          "hasBeenInCloseProximity": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -1349,6 +1353,10 @@
             "items": {
               "type": "string"
             }
+          },
+          "hasBeenInCloseProximity": {
+            "type": "boolean",
+            "default": false
           }
         }
       }
