@@ -87,9 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_guidance:
                             selectedFragment = new GuidanceFragment();
                             break;
-                        case R.id.nav_settings:
-                            selectedFragment = new SettingsFragment();
-                            break;
+
 
                     }
                     try {
@@ -178,6 +176,10 @@ public class MainActivity extends AppCompatActivity {
 //                                    latTextView.setText(location.getLatitude()+"");
 //                                    lonTextView.setText(location.getLongitude()+"");
                                     Log.e("LOCATION:", location.getLatitude()+" "+location.getLongitude());
+                                    Toast.makeText(MainActivity.this,
+                                            location.getLatitude()+" "+location.getLongitude(),
+                                            Toast.LENGTH_SHORT).show();
+                                    // TODO: POST LOCATION
                                 }
                             }
                         }

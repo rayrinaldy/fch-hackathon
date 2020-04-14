@@ -12,8 +12,5 @@
         android:id="@+id/nav_guidance"
         android:icon="@drawable/ic_forum_black_24dp"
         android:title="Guidance" />
-    <item
-        android:id="@+id/nav_settings"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:title="Settings" />
+
 </menu>
