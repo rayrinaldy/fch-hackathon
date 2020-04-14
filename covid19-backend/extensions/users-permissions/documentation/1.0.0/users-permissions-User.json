@@ -1245,8 +1245,47 @@
               }
             }
           },
-          "location": {
+          "underObservation": {
+            "type": "boolean",
+            "default": false
+          },
+          "isCovidPositive": {
+            "type": "boolean",
+            "default": false
+          },
+          "firstName": {
             "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNo": {
+            "type": "integer"
+          },
+          "rewardPoints": {
+            "type": "integer"
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "users": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "coordinate": {
+                  "type": "object"
+                }
+              }
+            }
           }
         }
       },
@@ -1285,8 +1324,31 @@
           "role": {
             "type": "string"
           },
-          "location": {
+          "underObservation": {
+            "type": "boolean",
+            "default": false
+          },
+          "isCovidPositive": {
+            "type": "boolean",
+            "default": false
+          },
+          "firstName": {
             "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNo": {
+            "type": "integer"
+          },
+          "rewardPoints": {
+            "type": "integer"
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
