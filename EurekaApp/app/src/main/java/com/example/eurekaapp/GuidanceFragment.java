@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -34,16 +35,27 @@ public class GuidanceFragment extends Fragment implements View.OnClickListener {
     SharedPreferences sp;
 
     final String url = "http://128.199.175.144:1337/users";
+    final String BUTTON_TXT_POSITIVE = "I HAVE NOT BEEN TESTED POSITIVE FOR COVID-19";
+    final String BUTTON_TXT_NEGATIVE = "I HAVE BEEN TESTED POSITIVE FOR COVID-19";
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView =inflater.inflate(R.layout.fragment_guidance, container, false);
 
-        button = (Button) rootView.findViewById(R.id.guidanceButton);
+        return inflater.inflate(R.layout.fragment_guidance,container,false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        button = (Button) getActivity().findViewById(R.id.guidanceButton);
+        button.setOnClickListener(this);
 
         sp = this.getActivity().getSharedPreferences("eureka", Context.MODE_PRIVATE);
         String id = sp.getString("id", "null");
+
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         JSONObject object = new JSONObject();
         try {
@@ -62,9 +74,9 @@ public class GuidanceFragment extends Fragment implements View.OnClickListener {
                             Boolean isUnderObservation = (Boolean) response.get("underObservation");
                             Boolean isCovidPositive = (Boolean) response.get("isCovidPositive");
                             if(isCovidPositive) {
-                                Toast.makeText(getActivity(), "You have been declared positive of COVID-19", Toast.LENGTH_SHORT).show();
+                                button.setText(BUTTON_TXT_POSITIVE);
                             } else {
-                                Toast.makeText(getActivity(), "You have NOT been declared positive of COVID-19", Toast.LENGTH_SHORT).show();
+                                button.setText(BUTTON_TXT_NEGATIVE);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -73,27 +85,26 @@ public class GuidanceFragment extends Fragment implements View.OnClickListener {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("ERROR", error.toString());
                 Toast.makeText(getActivity(), "Invalid attempt. Try again", Toast.LENGTH_SHORT).show();
             }
         });
         // Add the request to the RequestQueue.
         requestQueue.add(jsonObjectRequest);
 
-        button = (Button) rootView.findViewById(R.id.guidanceButton);
-        button.setOnClickListener(this);
-
-        return inflater.inflate(R.layout.fragment_guidance,container,false);
     }
-
-    @Override
-    public void onClick(View v) {
-        //do what you want to do when button is clicked
+    public void onClick(final View v) { //check for what button is pressed
         switch (v.getId()) {
             case R.id.guidanceButton:
-//                switchFragment(HelpFragment.TAG);
-                Toast.makeText(getActivity(), "Changing status", Toast.LENGTH_SHORT).show();
+                if(button.getText() == BUTTON_TXT_POSITIVE){
+                    declareUserNegative();
+                    button.setText(BUTTON_TXT_NEGATIVE);
+                } else {
+                    button.setText(BUTTON_TXT_POSITIVE);
+                }
                 break;
         }
+    }
+
+    private void declareUserNegative() {
     }
 }

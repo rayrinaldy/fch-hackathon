@@ -30,6 +30,6 @@
         android:layout_marginStart="40dp"
         android:background="@color/colorPrimary"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="CHANGE MY STATUS"
-        android:textColor="@color/cardview_light_background" />
+        android:textColor="@color/cardview_light_background"
+        android:textSize="12sp" />
 </RelativeLayout>
