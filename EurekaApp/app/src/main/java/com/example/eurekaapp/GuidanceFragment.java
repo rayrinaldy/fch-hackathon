@@ -33,6 +33,7 @@ public class GuidanceFragment extends Fragment implements View.OnClickListener {
 
     Button button;
     SharedPreferences sp;
+    String id;
 
     final String url = "http://128.199.175.144:1337/users";
     final String BUTTON_TXT_POSITIVE = "I HAVE NOT BEEN TESTED POSITIVE FOR COVID-19";
@@ -54,7 +55,7 @@ public class GuidanceFragment extends Fragment implements View.OnClickListener {
         button.setOnClickListener(this);
 
         sp = this.getActivity().getSharedPreferences("eureka", Context.MODE_PRIVATE);
-        String id = sp.getString("id", "null");
+        id = sp.getString("id", "null");
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         JSONObject object = new JSONObject();
@@ -97,14 +98,75 @@ public class GuidanceFragment extends Fragment implements View.OnClickListener {
             case R.id.guidanceButton:
                 if(button.getText() == BUTTON_TXT_POSITIVE){
                     declareUserNegative();
-                    button.setText(BUTTON_TXT_NEGATIVE);
                 } else {
-                    button.setText(BUTTON_TXT_POSITIVE);
+                    declareUserPositive();
                 }
                 break;
         }
     }
 
+    private void declareUserPositive() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+        JSONObject object = new JSONObject();
+        try {
+            // input API parameters
+            object.put("underObservation","true");
+            object.put("isCovidPositive","true");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Request a JSON response from the provided URL
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url+"/"+id, object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            button.setText(BUTTON_TXT_POSITIVE);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), "Invalid attempt. Try again", Toast.LENGTH_SHORT).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        requestQueue.add(jsonObjectRequest);
+    }
+
     private void declareUserNegative() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+        JSONObject object = new JSONObject();
+        try {
+            // input API parameters
+            object.put("isCovidPositive","false");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Request a JSON response from the provided URL
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url+"/"+id, object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            button.setText(BUTTON_TXT_NEGATIVE);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), "Invalid attempt. Try again", Toast.LENGTH_SHORT).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        requestQueue.add(jsonObjectRequest);
     }
 }
