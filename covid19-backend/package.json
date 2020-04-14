@@ -11,11 +11,9 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "knex": "<0.20.0",
-    "mysql": "latest",
     "strapi": "3.0.0-beta.19.5",
     "strapi-admin": "3.0.0-beta.19.5",
-    "strapi-connector-bookshelf": "3.0.0-beta.19.5",
+    "strapi-connector-mongoose": "3.0.0-beta.19.5",
     "strapi-plugin-content-manager": "3.0.0-beta.19.5",
     "strapi-plugin-content-type-builder": "3.0.0-beta.19.5",
     "strapi-plugin-documentation": "3.0.0-beta.19.5",
@@ -28,7 +26,7 @@
     "name": "A Strapi developer"
   },
   "strapi": {
-    "uuid": "6f25b07f-b736-415c-b899-7ab25c6e01d5"
+    "uuid": "6be1825a-eeda-4660-8916-05f489a643f5"
   },
   "engines": {
     "node": ">=10.0.0",
