@@ -47,6 +47,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "GET",
+      "path": "/locations/backtrack/:id",
+      "handler": "locations.updateUserLocation",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }
