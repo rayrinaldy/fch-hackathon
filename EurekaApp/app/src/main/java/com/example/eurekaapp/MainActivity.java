@@ -178,6 +178,10 @@ public class MainActivity extends AppCompatActivity {
 //                                    latTextView.setText(location.getLatitude()+"");
 //                                    lonTextView.setText(location.getLongitude()+"");
                                     Log.e("LOCATION:", location.getLatitude()+" "+location.getLongitude());
+                                    Toast.makeText(MainActivity.this,
+                                            location.getLatitude()+" "+location.getLongitude(),
+                                            Toast.LENGTH_SHORT).show();
+                                    // TODO: POST LOCATION
                                 }
                             }
                         }
