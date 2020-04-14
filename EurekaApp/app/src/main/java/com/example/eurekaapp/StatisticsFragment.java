@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +20,8 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class StatisticsFragment extends Fragment {
     LineGraphSeries<DataPoint> series;
+    EditText score;
+
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -27,6 +32,19 @@ public class StatisticsFragment extends Fragment {
         x = -5.0;
         View rootView =  inflater.inflate(R.layout.fragment_statistics,container,false);
         GraphView graph = (GraphView) rootView.findViewById(R.id.graph);
+        final EditText score = rootView.findViewById(R.id.scoreText);
+
+        Button button = (Button) rootView.findViewById(R.id.scoreButton);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // do something
+                score.setText("12321");
+            }
+        });
+
 
         graph.setTitle("Total Confirmed Cases");
         GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
@@ -42,5 +60,9 @@ public class StatisticsFragment extends Fragment {
         graph.addSeries(series);
 
         return rootView;
+    }
+    public void onClick(View view){
+
+
     }
 }
