@@ -34,16 +34,16 @@ public class StatisticsFragment extends Fragment {
         GraphView graph = (GraphView) rootView.findViewById(R.id.graph);
         final EditText score = rootView.findViewById(R.id.scoreText);
 
-        Button button = (Button) rootView.findViewById(R.id.scoreButton);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // do something
-                score.setText("12321");
-            }
-        });
+//        Button button = (Button) rootView.findViewById(R.id.scoreButton);
+//        button.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                // do something
+//                score.setText("12321");
+//            }
+//        });
 
 
         graph.setTitle("Total Confirmed Cases");
