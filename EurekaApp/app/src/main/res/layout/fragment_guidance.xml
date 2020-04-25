@@ -30,6 +30,7 @@
         android:layout_marginStart="40dp"
         android:background="@color/colorPrimary"
         android:fontFamily="sans-serif-condensed-medium"
+        android:text="I HAVE BEEN TESTED POSITIVE FOR COVID-19"
         android:textColor="@color/cardview_light_background"
         android:textSize="12sp" />
 </RelativeLayout>
